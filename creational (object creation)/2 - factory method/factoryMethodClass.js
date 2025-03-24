@@ -1,55 +1,38 @@
-class VehicleFactory {
-  static createVehicle(type, model) {
-    throw new Error("This method must be overridden!");
+class User {
+  constructor(name) {
+    this.name = name;
   }
 }
 
-class CarFactory extends VehicleFactory {
-  static createVehicle(type, model) {
-    if (type.toLowerCase() === "car") {
-      return new Car(model); // Return a new Car instance
+class Admin extends User {
+  getRole() {
+    return `${this.name} is an Admin`;
+  }
+}
+
+class Teacher extends User {
+  getRole() {
+    return `${this.name} is a Teacher`;
+  }
+}
+
+class Student extends User {
+  getRole() {
+    return `${this.name} is a Student`;
+  }
+}
+
+class UserFactory {
+  static createUser(role, name) {
+    switch (role) {
+      case "admin": return new Admin(name);
+      case "teacher": return new Teacher(name);
+      case "student": return new Student(name);
+      default: throw new Error("Invalid role");
     }
-    throw new Error("Unknown vehicle type!");
   }
 }
 
-class TruckFactory extends VehicleFactory {
-  static createVehicle(type, model) {
-    if (type.toLowerCase() === "truck") {
-      return new Truck(model); // Return a new Truck instance
-    }
-    throw new Error("Unknown vehicle type!");
-  }
-}
-
-class Car {
-  constructor(model) {
-    this.model = model;
-  }
-
-  drive() {
-    console.log(`${this.model} is driving!`);
-  }
-}
-
-class Truck {
-  constructor(model) {
-    this.model = model;
-  }
-
-  drive() {
-    console.log(`${this.model} is driving with heavy load!`);
-  }
-}
-
-try {
-  const car = CarFactory.createVehicle("car", "Toyota Corolla");
-  car.drive(); // Output: Toyota Corolla is driving!
-
-  const truck = TruckFactory.createVehicle("truck", "Ford F-150");
-  truck.drive(); // Output: Ford F-150 is driving with heavy load!
-
-  const unknown = VehicleFactory.createVehicle("bike", "Yamaha"); 
-} catch (error) {
-  console.error(error.message); // Output: Unknown vehicle type!
-}
+// Usage
+const user1 = UserFactory.createUser("admin", "Alice");
+console.log(user1.getRole()); // Alice is an Admin

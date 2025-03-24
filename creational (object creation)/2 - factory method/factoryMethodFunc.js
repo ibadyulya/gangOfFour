@@ -5,9 +5,9 @@ const ANIMAL_TYPE = {
 }
 
 const createAnimal = (name) => ({ name });
-const createDog = (animal) => ({ animal, sayHi: () => { console.log('WOOF WOOF!! I AM ', animal.name) } });
-const createFrog = (animal) => ({ animal, sayHi: () => { console.log('QUA QUA!! I AM ', animal.name) } });
-const createCat = (animal) => ({ animal, sayHi: () => { console.log('MEAOW!! I AM ', animal.name) } });
+const createDog = (animal) => ({ ...animal, sayHi: () => { console.log('WOOF WOOF!! I AM ', animal.name) } });
+const createFrog = (animal) => ({ ...animal, sayHi: () => { console.log('QUA QUA!! I AM ', animal.name) } });
+const createCat = (animal) => ({ ...animal, sayHi: () => { console.log('MEAOW!! I AM ', animal.name) } });
 
 const animalFactory = (type, name) => {
     const animal = createAnimal(name);
@@ -18,7 +18,7 @@ const animalFactory = (type, name) => {
         [ANIMAL_TYPE.FROG] : () => { return createFrog(animal) },
     }
 
-    return FACTORY[type]();
+    return FACTORY[type]() || { ...animal, getRole: () => `${name} is a Guest` };
 }
 
 const cat = animalFactory(ANIMAL_TYPE.CAT, 'Garfield');
